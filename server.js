@@ -57,10 +57,17 @@ db.on("error", function(error) {
 
 // Main -- Displays articles brought in from BI.com
 app.get("/", function(req, res) {
-  res.send("<h1>Latest Articles from Business Insider</h1>");
+  res.send(
+    "<h1>Latest Articles from Business Insider</h1> " +
+
+    "<h2>Like these articles? Save them for later!</h2>" +
+
+    "<button>Save Article</button>" +
+
+    "<button>Delete Article</button>");
 });
 
-// Retrieve data from the db
+// Retrieve data from the business-insider mongo database
 app.get("/all", function(req, res) {
   // Find all results from the business-insider collection in mongo (scrape is database name)
   db.scrape.find({}, function(error, found) {
@@ -87,13 +94,17 @@ app.get("/scrape", function(req, res) {
       // Save the text and href of each link enclosed in the current element
       var title = $(element).children().text();
       var link = $(element).children().attr("href");
+      var summary = "Summary of article";
+      var image = $(element).parent().attr("src");
 
-      // If this found element had both a title and a link
-      if (title && link) {
-        // Insert the data in the scrapedData db
+
+      if (title && link && summary) {
+        // Insert the data in the scrape database under the business-insider collection in mongo
         db.scrape.insert({
             title: title,
-            link: link
+            link: link,
+            summary: summary,
+            image: image,
           },
           function(err, inserted) {
             if (err) {
@@ -101,7 +112,6 @@ app.get("/scrape", function(req, res) {
               console.log(err);
             }
             else {
-              // Otherwise, log the inserted data
               console.log(inserted);
             }
           });
@@ -110,11 +120,11 @@ app.get("/scrape", function(req, res) {
   });
 
   // Send a "Scrape Complete" message to the browser
-  res.send("Scrape Complete");
+  res.send("Business Insider Scrape Complete. To view information in your terminal, add scrape to the end of the url in your browser");
 });
 
-
-// Listen on port 3000
-app.listen(8080, function() {
-  console.log("App running on port 8080!");
+//Set to port 8080 for Cloud 9 
+var PORT = 8080;
+app.listen(PORT, function() {
+  console.log("Application is running on port " + PORT + "!!");
 });
