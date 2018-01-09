@@ -122,7 +122,8 @@ app.get("/scrape", function(req, res) {
   });
 
   // Send a "Scrape Complete" message to the browser
-  res.send("Business Insider Scrape Complete. To view information in your terminal, add scrape to the end of the url in your browser");
+  res.sendFile(__dirname + "/public/materialize/index.html");
+  // res.send("./materialize/index.html");
 });
 
 //Set to port 8080 for Cloud 9 
