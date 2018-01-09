@@ -42,6 +42,8 @@ var mongojs = require("mongojs");
 var request = require("request");
 var cheerio = require("cheerio");
 
+var morgan = require("morgan");
+
 
 var app = express();
 
