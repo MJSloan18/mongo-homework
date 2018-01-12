@@ -40,13 +40,15 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-var axios = require("axios");
-var cheerio = require("cheerio");
+
 var mongojs = require("mongojs");
 var request = require("request");
 
-var db = require("./models");
 
+var cheerio = require("cheerio");
+var axios = require("axios");
+
+var db = require("./models/Index.js");
 var PORT = 8080;
 
 var app = express();
@@ -56,34 +58,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("public"));
 
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/week18Populator", {
+mongoose.connect("mongodb://heroku_4v70307w:np6i2osrf6kltp16d6vmban2ce@ds245347.mlab.com:45347/heroku_4v70307w", {
   useMongoClient: true
 });
-// heroku_4v70307w:np6i2osrf6kltp16d6vmban2ce@ds245347.mlab.com:45347/heroku_4v70307w
-
-
-
-// Database configuration
-// var databaseUrl = "business-insider";
-// var collections = ["scrape"];
-
-
-// var db = mongojs(databaseUrl, collections);
-// db.on("error", function(error) {
-//   console.log("Database Error:", error);
-// });
-
-// Main -- Displays articles brought in from BI.com
-// app.get("/", function(req, res) {
-//   res.send(
-//     "<h1>Latest Articles from Business Insider</h1> " +
-
-//     "<h2>Like these articles? Save them for later!</h2>" +
-
-//     "<button>Save Article</button>" +
-
-//     "<button>Delete Article</button>");
-// });
 
 // Scrape data from BI.com and place into business-insider db on mongo
 app.get("/scrape", function(req, res) {
